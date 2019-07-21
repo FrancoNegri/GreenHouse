@@ -14,6 +14,7 @@
 //Other connectors
 #define ALARM 10
 #define LIGHTSENSOR A0
+#define SERVO_PIN 9
 //SWITCH Utils
 #define ON   0
 #define OFF  1
@@ -41,7 +42,8 @@ void setup(){
   //t.every(1000UL * 60UL,sense);
   t.every(1000UL,sense); //Testing
   sense();
-  myservo.attach(9);  // attaches the servo on pin 9 to the servo object 
+
+  moveServo(0);
 }
 
 void loop(){
@@ -83,15 +85,21 @@ void handleSerial() {
 
       //tapa (T=tapado, t=noTapado) 
       case 'T':
-          myservo.write(90);
-          tapado = true;
+        moveServo(90);
       break;
       case 't':
-        myservo.write(0);
-        tapado = false;
+        moveServo(0);
       break;
      }
   }
+}
+
+void moveServo(int degree){
+    myservo.attach(SERVO_PIN);
+    myservo.write(degree);
+    tapado = false;
+    delay(1000);
+    myservo.detach();  
 }
 
 void sense(){
