@@ -27,10 +27,10 @@ def reciveData(s1):
 				break
 			data = data + inputValue.decode()
 	splittedData = data.split("\t")
-	return (int(float(splittedData[1])),int(float(splittedData[0])))
+	return (int(float(splittedData[1])),int(float(splittedData[0])),int(splittedData[2]) > 50, int(splittedData[3]), int(splittedData[4]), int(splittedData[5]), int(splittedData[6]), int(splittedData[7]))
 
 def insert_data(conn, data):
-	sql = ''' INSERT INTO dhtreadings(temperature, humidity) VALUES(?,?) '''
+	sql = ''' INSERT INTO dhtreadings(temperature, humidity,light,tapa, switch1, switch2 , switch3, switch4) VALUES(?,?,?,?,?,?,?,?) '''
 	cur = conn.cursor()
 	cur.execute(sql, data)
 	return cur.lastrowid
