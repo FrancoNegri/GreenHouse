@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>Session</title>
+</head>
+<body>
+    <p>Temperatura Actual: {{ temperature }} Cº</p>
+    <p>Humedad Actual: {{ humidity }} %</p>
+    <p>Actualizado: {{ time }}</p>
+
+    <img src="static/image.png?{{ time }}">
+    <img src="static/humedad.png?{{ time }}">
+
+</body>
+</html>
