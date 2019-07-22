@@ -23,11 +23,13 @@ def reciveData(s1):
 		date = datetime.datetime.now().date()
 		while True:
 			inputValue=s1.read(1)
+			#print(inputValue.decode(),end='')
 			if inputValue.decode() is '\n':
 				break
 			data = data + inputValue.decode()
 	splittedData = data.split("\t")
-	return (int(float(splittedData[1])),int(float(splittedData[0])),int(splittedData[2]) > 50, int(splittedData[3]), int(splittedData[4]), int(splittedData[5]), int(splittedData[6]), int(splittedData[7]))
+	print(splittedData)
+	return (int(float(splittedData[1])),int(float(splittedData[0])),int(splittedData[2]) > 90, int(splittedData[3]), int(splittedData[4]), int(splittedData[5]), int(splittedData[6]), int(splittedData[7]))
 
 def insert_data(conn, data):
 	sql = ''' INSERT INTO dhtreadings(temperature, humidity,light,tapa, switch1, switch2 , switch3, switch4) VALUES(?,?,?,?,?,?,?,?) '''
@@ -54,7 +56,7 @@ while True:
 		s1.write('-'.encode())
 	if(s1.inWaiting() > 0):
 		data = reciveData(s1)
-		print(data)
+		#print(data)
 		conn=sqlite3.connect('/home/pi/sensordata.db')
 		#conn.row_factory = dict_factory
 		insert_data(conn, data)
