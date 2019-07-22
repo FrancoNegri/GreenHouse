@@ -3,10 +3,18 @@
     <title>Session</title>
 </head>
 <body>
-    <p>Temperatura Actual: {{ temperature }} Cº</p>
-    <p>Humedad Actual: {{ humidity }} %</p>
-    <p>Actualizado: {{ time }}</p>
+	<title>Metricas</title>
+    <p>Temperatura: {{ temperature }} Cº</p>
+    <p>Humedad: {{ humidity }} %</p>
+    <p>Luz: {{ luz }}</p>
+    <p>Tapa: {{ tapa }}</p>
+    <p>Switch1: {{ switch1 }} </p>
+    <p>Switch2: {{ switch2 }} </p>
+    <p>Switch3: {{ switch3 }} </p>
+    <p>Switch4: {{ switch4 }} </p>
 
+    <p>Actualizado: {{ time }}</p>
+	<title>Estadisticas Ultimas 24 hs</title>
     <img src="static/image.png?{{ time }}">
     <img src="static/humedad.png?{{ time }}">
 
