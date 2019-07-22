@@ -37,6 +37,39 @@ def insert_data(conn, data):
 	cur.execute(sql, data)
 	return cur.lastrowid
 
+def nextInstructions(s1):
+	day = isDay()
+	light = state("switch2")
+	if day and light == 0:
+		s1.write('t'.encode())
+		time.sleep(1)
+		s1.write('+'.encode())
+	elif not day and light == 1:
+		s1.write('-'.encode())
+		time.sleep(1)
+		s1.write('T'.encode())
+	heatLight = state("switch1")
+	temperature = state("temperature")
+	if not day:
+		if temperature < 20 and heatLight == 0:
+			s1.write('L'.encode())
+		elif temperature >= 20 and heatLight == 1:
+			s1.write('l'.encode())
+	else:
+		if temperature < 26 and heatLight == 0:
+			s1.write('L'.encode())
+		elif temperature >= 26 and heatLight == 1:
+			s1.write('l'.encode())
+
+
+def state(id):
+	con=sqlite3.connect('/home/pi/sensordata.db')
+	cur = con.cursor()
+	cur.execute('SELECT '+ id +' FROM dhtreadings ORDER BY id DESC LIMIT 1')
+	result = cur.fetchall()
+	print(result)
+	return result[0][0]
+
 path = '/home/pi/data.csv'
 log = open(path,'a+')
 
@@ -46,14 +79,11 @@ if prevUpdate:
 else:
 	s1.write('-'.encode())
 
+	
+
 #reciveData(s1)#flush possible missing data from arduino
 while True:
-	day = isDay()
-	print("ok")
-	if day and prevUpdate is not day:
-		s1.write('+'.encode())
-	elif not day and prevUpdate is day:
-		s1.write('-'.encode())
+	nextInstructions(s1)
 	if(s1.inWaiting() > 0):
 		data = reciveData(s1)
 		#print(data)
@@ -63,6 +93,5 @@ while True:
 		conn.commit()
 		conn.close()
 		#print(data)
-	prevUpdate = day
 	log.flush()
 	time.sleep(30)
