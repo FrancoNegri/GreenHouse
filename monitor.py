@@ -38,10 +38,7 @@ def insert_data(conn, data):
     cur.execute(sql, data)
     return cur.lastrowid
 
-manualMode = False
-
-
-def nextInstructions(s1,queue,state):
+def nextInstructions(s1,queue,manualMode):
     command = None
     try:
         command = queue.get(timeout=30)
