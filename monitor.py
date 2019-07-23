@@ -94,7 +94,7 @@ def state(id):
 def start(monitorQueue, botQueue):
     manualMode = ManualMode()
     manualMode.putState(False)
-    port = "/dev/pts/3"
+    port = "/dev/ttyACM0"
     s1 = serial.Serial(port, 9600)
     s1.flushInput()
     path = '/home/pi/data.csv'

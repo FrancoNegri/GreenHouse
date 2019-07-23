@@ -70,7 +70,9 @@ def startBot(monitorQueue, botQueue):
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
     f=open("secret.key", "r")
-    updater = Updater(f.read(), use_context=True)
+    key = f.readline().rstrip()
+    print(key)
+    updater = Updater(key, use_context=True)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
