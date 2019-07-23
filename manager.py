@@ -18,13 +18,14 @@ def launchThread(name, startBot, monitorQueue, botQueue):
     logging.info("Main    : running bot")
     t.deamon = True
     t.start()
+    return t
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
 monitorQueue = queue.Queue()
 botQueue = queue.Queue()
 bot = launchThread("bot", startBot, monitorQueue, botQueue)
-monitor = launchThread("monitor", monitorQueue, monitorQueue, botQueue)
+monitor = launchThread("monitor", start, monitorQueue, botQueue)
 
 while True:
     botAlive = bot.isAlive()
@@ -37,7 +38,7 @@ while True:
     if not botAlive:
         bot = launchThread("bot", startBot, monitorQueue, botQueue)
     if not monitorAlive:
-        monitor = launchThread("monitor", monitorQueue, monitorQueue, botQueue)
+        monitor = launchThread("monitor", start, monitorQueue, botQueue)
     time.sleep(secs)
 
 # block until all tasks are done
