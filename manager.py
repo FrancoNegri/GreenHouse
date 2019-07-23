@@ -13,11 +13,11 @@ def insert_data(conn, data):
     return cur.lastrowid
 
 def launchThread(name, startBot, monitorQueue, botQueue):
-	logging.info("Main    : maknig bot")
-	t = threading.Thread(target=startBot,args=(monitorQueue,botQueue))
-	logging.info("Main    : running bot")
-	t.deamon = True
-	t.start()
+    logging.info("Main    : maknig bot")
+    t = threading.Thread(target=startBot,args=(monitorQueue,botQueue))
+    logging.info("Main    : running bot")
+    t.deamon = True
+    t.start()
 
 format = "%(asctime)s: %(message)s"
 logging.basicConfig(format=format, level=logging.INFO, datefmt="%H:%M:%S")
@@ -27,18 +27,18 @@ bot = launchThread("bot", startBot, monitorQueue, botQueue)
 monitor = launchThread("monitor", monitorQueue, monitorQueue, botQueue)
 
 while True:
-	botAlive = bot.isAlive()
-	monitorAlive = monitor.isAlive()
-	data = [botAlive,monitorAlive]
-	conn=sqlite3.connect('/home/pi/sensordata.db')
+    botAlive = bot.isAlive()
+    monitorAlive = monitor.isAlive()
+    data = [botAlive,monitorAlive]
+    conn=sqlite3.connect('/home/pi/sensordata.db')
     insert_data(conn, data)
     conn.commit()
     conn.close()
-	if not botAlive:
-		bot = launchThread("bot", startBot, monitorQueue, botQueue)
-	if not monitorAlive:
-		monitor = launchThread("monitor", monitorQueue, monitorQueue, botQueue)
-	time.sleep(secs)
+    if not botAlive:
+        bot = launchThread("bot", startBot, monitorQueue, botQueue)
+    if not monitorAlive:
+        monitor = launchThread("monitor", monitorQueue, monitorQueue, botQueue)
+    time.sleep(secs)
 
 # block until all tasks are done
 m.join()
