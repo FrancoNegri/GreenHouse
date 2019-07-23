@@ -21,7 +21,7 @@ import logging
 import queue
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import sqlite3
-
+import time
 
 # Define a few command handlers. These usually take the two arguments bot and
 # update. Error handlers also receive the raised TelegramError object in error.
@@ -53,7 +53,7 @@ def getState(id):
 def temperatura(update, context):
     id = "temperature"
     result = getState(id)
-    update.message.reply_text("Temperatura: " + result +" Cº")
+    update.message.reply_text("Temperatura: " + str(result) +" Cº")
 
 def echo(update, context):
     """Echo the user message."""
@@ -62,7 +62,7 @@ def echo(update, context):
 
 def error(update, context):
     """Log Errors caused by Updates."""
-    logger.warning('Update "%s" caused error "%s"', update, context.error)
+    logging.error('Update "%s" caused error "%s"', update, context.error)
 
 def startBot(monitorQueue, botQueue):
     global globalMonitorQueue
@@ -106,8 +106,9 @@ def startBot(monitorQueue, botQueue):
     # Run the bot until you press Ctrl-C or the process receives SIGINT,
     # SIGTERM or SIGABRT. This should be used most of the time, since
     # start_polling() is non-blocking and will stop the bot gracefully.
-    updater.idle()
-
+    #updater.idle()
+    while True:
+        time.sleep(30)
 
 if __name__ == '__main__':
     startBot(queue.Queue(),queue.Queue() )

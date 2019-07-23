@@ -36,10 +36,12 @@ while True:
     conn.commit()
     conn.close()
     if not botAlive:
+        logging.info("Relaunching bot")
         bot = launchThread("bot", startBot, monitorQueue, botQueue)
     if not monitorAlive:
+        logging.info("Relaunching monitor")
         monitor = launchThread("monitor", start, monitorQueue, botQueue)
-    time.sleep(secs)
+    time.sleep(30)
 
 # block until all tasks are done
 m.join()
