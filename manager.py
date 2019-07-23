@@ -19,17 +19,12 @@ threads.append(t)
 
 #monitor
 logging.info("Main    : maknig bot")
-t = threading.Thread(target=start,args=(q,))
+m = threading.Thread(target=start,args=(q,))
 logging.info("Main    : running bot")
-t.start()
+m.start()
 logging.info("Main    : wait for the thread to finish")
 threads.append(t)
 
 # block until all tasks are done
-q.join()
-
-# stop workers
-for i in range(num_worker_threads):
-    q.put(None)
-for t in threads:
-    t.join()
+m.join()
+t.join()

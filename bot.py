@@ -36,7 +36,7 @@ def help(update, context):
 
 
 def command(update, context):
-    globalQueue.put_nowait(update.message.text)
+    globalQueue.put_nowait(update.message.text.split(" ")[1])
     update.message.reply_text('Ok!')
 
 
@@ -52,6 +52,7 @@ def error(update, context):
 globalQueue = None
 
 def startBot(newQueue):
+    global globalQueue
     globalQueue = newQueue
     print(globalQueue)
     # Enable logging
