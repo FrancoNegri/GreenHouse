@@ -40,12 +40,19 @@ def insert_data(conn, data):
 
 manualMode = False
 
-def nextInstructions(s1,queue,manualMode):
-    if not queue.empty():
-        command = queue.get()
-        print("command recived: " + command)
+
+def nextInstructions(s1,queue,state):
+    command = None
+    try:
+        command = queue.get(timeout=30)
+    except Empty:
+        pass
+    if command:
+        print("Command: " + command)
         if command == "manualMode":
-            manualMode.putState(True)
+            state.state(True)
+        if command == "automaticMode":
+            state.state(False)
         if command == "t" or command == "T" or command == "+" or command == "-" or command == "l" or command == "L":
             s1.write(command.encode())
     if not manualMode.state():
@@ -96,7 +103,7 @@ def start(queue):
             insert_data(conn, data)
             conn.commit()
             conn.close()
-        time.sleep(30)
+        #time.sleep(30)
 
 if __name__ == "__main__":
     start(queue.Queue())
