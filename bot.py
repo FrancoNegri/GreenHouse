@@ -43,7 +43,7 @@ def command(update, context):
         response = globalBotQueue.get()
         update.message.reply_text(response)
 
-def getState(id)
+def getState(id):
     con=sqlite3.connect('/home/pi/sensordata.db')
     cur = con.cursor()
     cur.execute('SELECT '+ id +' FROM dhtreadings ORDER BY id DESC LIMIT 1')
@@ -53,7 +53,7 @@ def getState(id)
 def temperatura(update, context):
     id = "temperature"
     result = getState(id)
-    update.message.reply_text("Temperatura: " result +" Cº")
+    update.message.reply_text("Temperatura: " + result +" Cº")
 
 def echo(update, context):
     """Echo the user message."""
