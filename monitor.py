@@ -4,6 +4,13 @@ import sqlite3
 import datetime
 import time
 
+class State:
+    def state(self,state):
+        self._state = state
+
+    def state(self)
+        return self._state
+
 def isDay():
     timestamp = datetime.datetime.now().time() # Throw away the date information
     start = datetime.time(8)
@@ -33,14 +40,14 @@ def insert_data(conn, data):
 
 manualMode = False
 
-def nextInstructions(s1,queue):
+def nextInstructions(s1,queue,state):
     if not queue.empty():
         command = queue.get()
         if command == "manualMode":
-            manualMode = True
+            state.state(True)
         if command == "t" or command == "T" or command == "+" or command == "-" or command == "l" or command == "L":
             s1.write(command.encode())
-    if not manualMode:
+    if not state.state():
         day = isDay()
         light = state("switch2")
         if day and light == 0:
@@ -74,12 +81,14 @@ def state(id):
     return result[0][0]
 
 def start(queue):
+    state = State()
+    state.state(False)
     port = "/dev/ttyACM0"
     s1 = serial.Serial(port, 9600)
     s1.flushInput()
     path = '/home/pi/data.csv'
     while True:
-        nextInstructions(s1,queue)
+        nextInstructions(s1,queue,state)
         if(s1.inWaiting() > 0):
             data = reciveData(s1)
             conn=sqlite3.connect('/home/pi/sensordata.db')
