@@ -20,9 +20,9 @@ logging.info("Main    : wait for the thread to finish")
 threads.append(t)
 
 #monitor
-logging.info("Main    : maknig bot")
+logging.info("Main    : maknig monitor")
 m = threading.Thread(target=start,args=(monitorQueue,botQueue))
-logging.info("Main    : running bot")
+logging.info("Main    : running monitor")
 m.deamon = True
 m.start()
 logging.info("Main    : wait for the thread to finish")

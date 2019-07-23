@@ -48,10 +48,10 @@ def nextInstructions(s1,monitorQueue,botQueue,manualMode):
     if command:
         print("Command: " + command)
         if command == "manualMode":
-            state.state(True)
+            state.putState(True)
             botQueue.put_nowait("Sabruskis modo manual")
         elif command == "automaticMode":
-            state.state(False)
+            state.putState(False)
             botQueue.put_nowait("Sabruskis modo automatico")
         elif command == "t" or command == "T" or command == "+" or command == "-" or command == "l" or command == "L":
             s1.write(command.encode())
