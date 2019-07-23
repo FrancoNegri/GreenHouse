@@ -20,7 +20,7 @@ bot.
 import logging
 import queue
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
-
+import sqlite3
 
 
 # Define a few command handlers. These usually take the two arguments bot and
@@ -42,6 +42,18 @@ def command(update, context):
         globalMonitorQueue.put(command[1])
         response = globalBotQueue.get()
         update.message.reply_text(response)
+
+def getState(id)
+    con=sqlite3.connect('/home/pi/sensordata.db')
+    cur = con.cursor()
+    cur.execute('SELECT '+ id +' FROM dhtreadings ORDER BY id DESC LIMIT 1')
+    result = cur.fetchall()
+    return result[0][0]
+
+def temperatura(update, context):
+    id = "temperature"
+    result = getState(id)
+    update.message.reply_text("Temperatura: " result +" Cº")
 
 def echo(update, context):
     """Echo the user message."""
@@ -81,6 +93,7 @@ def startBot(monitorQueue, botQueue):
     dp.add_handler(CommandHandler("start", start))
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("command", command))
+    dp.add_handler(CommandHandler("temperatura", temperatura))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
 
