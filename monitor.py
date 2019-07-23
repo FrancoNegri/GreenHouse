@@ -3,6 +3,7 @@ import serial
 import sqlite3
 import datetime
 import time
+import queue
 
 class ManualMode:
     def putState(self,state):
@@ -38,20 +39,25 @@ def insert_data(conn, data):
     cur.execute(sql, data)
     return cur.lastrowid
 
-def nextInstructions(s1,queue,manualMode):
+def nextInstructions(s1,monitorQueue,botQueue,manualMode):
     command = None
     try:
-        command = queue.get(timeout=30)
-    except Empty:
+        command = monitorQueue.get(timeout=30)
+    except queue.Empty:
         pass
     if command:
         print("Command: " + command)
         if command == "manualMode":
             state.state(True)
-        if command == "automaticMode":
+            botQueue.put_nowait("Sabruskis modo manual")
+        elif command == "automaticMode":
             state.state(False)
-        if command == "t" or command == "T" or command == "+" or command == "-" or command == "l" or command == "L":
+            botQueue.put_nowait("Sabruskis modo automatico")
+        elif command == "t" or command == "T" or command == "+" or command == "-" or command == "l" or command == "L":
             s1.write(command.encode())
+            botQueue.put_nowait("Sabruskis ejecutando: " + command)
+        else:
+            botQueue.put_nowait("Comando no valido")
     if not manualMode.state():
         day = isDay()
         light = state("switch2")
@@ -85,15 +91,15 @@ def state(id):
     print(result)
     return result[0][0]
 
-def start(queue):
+def start(monitorQueue, botQueue):
     manualMode = ManualMode()
     manualMode.putState(False)
-    port = "/dev/ttyACM0"
+    port = "/dev/pts/3"
     s1 = serial.Serial(port, 9600)
     s1.flushInput()
     path = '/home/pi/data.csv'
     while True:
-        nextInstructions(s1,queue,manualMode)
+        nextInstructions(s1,monitorQueue,botQueue,manualMode)
         if(s1.inWaiting() > 0):
             data = reciveData(s1)
             conn=sqlite3.connect('/home/pi/sensordata.db')
@@ -103,4 +109,4 @@ def start(queue):
         #time.sleep(30)
 
 if __name__ == "__main__":
-    start(queue.Queue())
+    start(queue.Queue(),queue.Queue())

@@ -36,9 +36,12 @@ def help(update, context):
 
 
 def command(update, context):
-    globalQueue.put_nowait(update.message.text.split(" ")[1])
-    update.message.reply_text('Ok!')
-
+    command = update.message.text.split(" ")
+    if len(command) > 1:
+        logging.info("Bot    : command recived: " + command[1])
+        globalMonitorQueue.put(command[1])
+        response = globalBotQueue.get()
+        update.message.reply_text(response)
 
 def echo(update, context):
     """Echo the user message."""
@@ -49,12 +52,14 @@ def error(update, context):
     """Log Errors caused by Updates."""
     logger.warning('Update "%s" caused error "%s"', update, context.error)
 
-globalQueue = None
+def startBot(monitorQueue, botQueue):
+    global globalMonitorQueue
+    globalMonitorQueue = monitorQueue
+    print(globalMonitorQueue)
 
-def startBot(newQueue):
-    global globalQueue
-    globalQueue = newQueue
-    print(globalQueue)
+    global globalBotQueue
+    globalBotQueue = botQueue
+    print(globalBotQueue)
     # Enable logging
     logging.basicConfig(format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
                         level=logging.INFO)
@@ -64,7 +69,8 @@ def startBot(newQueue):
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    updater = Updater("900111806:AAF2Fv48MBPNNgwBqzOFFPz9HhOasWFwTxU", use_context=True)
+    f=open("secret.key", "r")
+    updater = Updater(f.read(), use_context=True)
 
     # Get the dispatcher to register handlers
     dp = updater.dispatcher
@@ -89,4 +95,4 @@ def startBot(newQueue):
 
 
 if __name__ == '__main__':
-    startBot(queue.Queue())
+    startBot(queue.Queue(),queue.Queue() )
