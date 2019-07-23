@@ -55,10 +55,12 @@ def temperatura(update, context):
     result = getState(id)
     update.message.reply_text("Temperatura: " + str(result) +" Cº")
 
+def graficoTemperatura(update, context):
+    update.message.reply_photo(photo='/home/pi/littleGreen/image.png')
+
 def echo(update, context):
     """Echo the user message."""
     update.message.reply_text(update.message.text)
-
 
 def error(update, context):
     """Log Errors caused by Updates."""
@@ -94,6 +96,7 @@ def startBot(monitorQueue, botQueue):
     dp.add_handler(CommandHandler("help", help))
     dp.add_handler(CommandHandler("command", command))
     dp.add_handler(CommandHandler("temperatura", temperatura))
+    dp.add_handler(CommandHandler("graficoTemp", graficoTemperatura))
     # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text, echo))
 
