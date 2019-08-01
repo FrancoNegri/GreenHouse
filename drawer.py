@@ -22,7 +22,7 @@ def draw():
 	tempHist = getValues(cur, "temperature", "150", "10")
 	humHist = getValues(cur, "humidity", "150", "10")
 	timeHist = getValues(cur, 'created_date as "[timestamp]"', "150", "10")
-	light = getValues(cur, "light", "150", "10")
+	light = getValues(cur, "switch1", "150", "10")
 
 	tempHist = list(map(lambda x: x[0],tempHist))
 	humHist = list(map(lambda x: x[0],humHist))
