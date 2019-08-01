@@ -22,10 +22,12 @@ def draw():
 	tempHist = getValues(cur, "temperature", "150", "10")
 	humHist = getValues(cur, "humidity", "150", "10")
 	timeHist = getValues(cur, 'created_date as "[timestamp]"', "150", "10")
+	light = getValues(cur, "light", "150", "10")
 
 	tempHist = list(map(lambda x: x[0],tempHist))
 	humHist = list(map(lambda x: x[0],humHist))
 	timeHist = list(map(lambda x: x[0],timeHist))
+	light = list(map(lambda x: x[0],light))
 
 	tempHist.reverse()
 	humHist.reverse()
@@ -67,6 +69,26 @@ def draw():
 	plt.yticks(fontsize=8)
 	#fig.autofmt_xdate()
 	plt.savefig("/home/pi/littleGreen/static/humedad.png")
+	plt.clf()
+
+
+	fig, ax = plt.subplots()
+	plt.title('Calefaccion: Ultimas 24 horas', fontsize=16)
+	plt.xlabel('Hora')
+	plt.ylabel('Luz')
+	plt.plot(timeHist, light)
+	#plt.ylim(bottom=0)
+	plt.yticks(np.arange(0, 3, 1))
+	plt.grid()
+	years_fmt = mdates.DateFormatter('%Y')
+	myFmt = DateFormatter("%Hhs")
+	ax.xaxis.set_major_locator(hours)
+	ax.xaxis.set_major_formatter(myFmt)
+	plt.xticks(fontsize=8,rotation=90)
+	plt.yticks(fontsize=8)
+	#ax.yaxis.set_major_locator(plt.MaxNLocator(5))
+	#fig.autofmt_xdate()
+	plt.savefig("/home/pi/littleGreen/static/luz.png")
 	plt.clf()
 
 

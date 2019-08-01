@@ -74,12 +74,12 @@ def nextInstructions(s1,monitorQueue,botQueue,manualMode):
         if not day:
             if temperature < 20 and heatLight == 0:
                 s1.write('L'.encode())
-            elif temperature >= 20 and heatLight == 1:
+            elif temperature >= 24 and heatLight == 1:
                 s1.write('l'.encode())
         else:
             if temperature < 26 and heatLight == 0:
                 s1.write('L'.encode())
-            elif temperature >= 26 and heatLight == 1:
+            elif temperature >= 30 and heatLight == 1:
                 s1.write('l'.encode())
 
 
