@@ -50,7 +50,7 @@ def draw():
 	plt.yticks(fontsize=8)
 	#ax.yaxis.set_major_locator(plt.MaxNLocator(5))
 	#fig.autofmt_xdate()
-	plt.savefig("/home/pi/littleGreen/static/image.png")
+	plt.savefig("/home/pi/GreenHouse/static/image.png")
 	plt.clf()
 
 	fig, ax = plt.subplots()
@@ -68,7 +68,7 @@ def draw():
 	plt.xticks(fontsize=8,rotation=90)
 	plt.yticks(fontsize=8)
 	#fig.autofmt_xdate()
-	plt.savefig("/home/pi/littleGreen/static/humedad.png")
+	plt.savefig("/home/pi/GreenHouse/static/humedad.png")
 	plt.clf()
 
 
@@ -88,7 +88,7 @@ def draw():
 	plt.yticks(fontsize=8)
 	#ax.yaxis.set_major_locator(plt.MaxNLocator(5))
 	#fig.autofmt_xdate()
-	plt.savefig("/home/pi/littleGreen/static/luz.png")
+	plt.savefig("/home/pi/GreenHouse/static/luz.png")
 	plt.clf()
 
 

@@ -83,7 +83,7 @@ def startBot(monitorQueue, botQueue):
     # Create the Updater and pass it your bot's token.
     # Make sure to set use_context=True to use the new context based callbacks
     # Post version 12 this will no longer be necessary
-    f=open("secret.key", "r")
+    f=open("/home/pi/GreenHouse/secret.key", "r")
     key = f.readline().rstrip()
     print(key)
     updater = Updater(key, use_context=True)

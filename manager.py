@@ -5,6 +5,7 @@ from monitor import start
 import logging
 import sqlite3
 import time
+import drawer
 
 def insert_data(conn, data):
     sql = ''' INSERT INTO managerStats(bot, monitor) VALUES(?,?) '''
@@ -41,7 +42,8 @@ while True:
     if not monitorAlive:
         logging.info("Relaunching monitor")
         monitor = launchThread("monitor", start, monitorQueue, botQueue)
-    time.sleep(30)
+    drawer.draw()
+    time.sleep(60*5)
 
 # block until all tasks are done
 m.join()
